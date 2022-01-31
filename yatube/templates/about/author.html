@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Об авторе проекта{% endblock %}
+{% block content %}
+{% load static %}
+<h1 class="text-center">Привет, я автор.</h1>
+<article class="row">
+  <article class="col-12 col-md-12">
+    <ul class="list-group list-group-flush">
+      <li class="list-group-item">
+        Тут я размещу информацию о себе используя свои умения верстать.
+      </li>
+      <li class="list-group-item">
+        Картинки, блоки, элементы бустрап. А может быть, просто напишу
+        несколько абзацев текста.
+      </li>
+    </ul>
+  </article>
+</article>
+<article class="container">
+  <img
+     src="{% static 'img/cat.jpg' %}"
+     width="194" height="198"
+     class="img-thumbnail rounded mx-auto d-block" alt=""
+  >
+</article>
+{% endblock %}
