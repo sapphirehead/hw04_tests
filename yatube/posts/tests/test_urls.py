@@ -14,7 +14,9 @@ class PostURLTests(TestCase):
         cls.OK = HTTPStatus.OK.value
         cls.NOT_FOUND = HTTPStatus.NOT_FOUND.value
         cls.user_is_author = User.objects.create_user(username='IsAuthor')
-        cls.user_is_not_author = User.objects.create_user(username='IsNotAuthor')
+        cls.user_is_not_author = User.objects.create_user(
+            username='IsNotAuthor'
+        )
 
         cls.not_author = str(cls.user_is_not_author)
         cls.author = str(cls.user_is_author)
@@ -62,7 +64,9 @@ class PostURLTests(TestCase):
 
     def test_post_edit_url_exists_at_desired_location_authorized(self):
         """Страница /posts/post_id/edit/ доступна автору."""
-        response = self.authorized_client_author.get('/posts/' + self.post_id + '/edit/')
+        response = self.authorized_client_author.get(
+            '/posts/' + self.post_id + '/edit/'
+        )
         self.assertEqual(response.status_code, self.OK)
 
     def test_urls_redirect_anonymous_on_auth_login(self):

@@ -42,7 +42,8 @@ class PostFormTests(TestCase):
             data=form_data,
             follow=True
         )
-        self.assertRedirects(response, reverse(
+        self.assertRedirects(
+            response, reverse(
                 'posts:profile', kwargs={'username': self.author}
             )
         )
@@ -73,10 +74,11 @@ class PostFormTests(TestCase):
             data=form_data,
             follow=True
         )
-        self.assertRedirects(response, reverse(
-            'posts:post_detail', kwargs={'post_id': post.id}
+        self.assertRedirects(
+            response, reverse(
+                'posts:post_detail', kwargs={'post_id': post.id}
+            )
         )
-                             )
         self.assertEqual(Post.objects.count(), posts_count)
         self.assertTrue(
             Post.objects.filter(

@@ -1,7 +1,6 @@
 from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
-from django.urls import reverse
 
 
 User = get_user_model()
@@ -36,8 +35,6 @@ class UserURLTests(TestCase):
         """Проверка вызываемых шаблонов для каждого адреса"""
         templates_url_names = {
             '/auth/logout/': 'users/logged_out.html',
-            # '/auth/password_change/': 'users/password_change_form.html',
-            # '/auth/password_change/done/': 'users/password_change_done.html',
             '/auth/password_reset/': 'users/password_reset_form.html',
             '/auth/password_reset/done/': 'users/password_reset_done.html',
             '/auth/reset/hash/token/': 'users/password_reset_confirm.html',
