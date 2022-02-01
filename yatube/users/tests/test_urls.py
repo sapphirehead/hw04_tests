@@ -1,4 +1,3 @@
-from http import HTTPStatus
 from django.contrib.auth import get_user_model
 from django.test import TestCase, Client
 
@@ -10,8 +9,6 @@ class UserURLTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.OK = HTTPStatus.OK.value
-        cls.NOT_FOUND = HTTPStatus.NOT_FOUND.value
         cls.user = User.objects.create_user(username='IsNotAuthor')
 
     def setUp(self):
@@ -33,14 +30,14 @@ class UserURLTests(TestCase):
 
     def test_authorized_client_urls_uses_correct_template(self):
         """Проверка вызываемых шаблонов для каждого адреса"""
-        templates_url_names = {
+        urls_templates_names = {
             '/auth/logout/': 'users/logged_out.html',
             '/auth/password_reset/': 'users/password_reset_form.html',
             '/auth/password_reset/done/': 'users/password_reset_done.html',
             '/auth/reset/hash/token/': 'users/password_reset_confirm.html',
             '/auth/reset/done/': 'users/password_reset_complete.html',
         }
-        for url, template in templates_url_names.items():
+        for url, template in urls_templates_names.items():
             with self.subTest(url=url, template=template):
                 response = self.authorized_client.get(url)
                 self.assertTemplateUsed(response, template)
@@ -49,11 +46,11 @@ class UserURLTests(TestCase):
         """Проверка вызываемых шаблонов для каждого адреса
         изменения пароля
         """
-        templates_url_names = {
+        urls_templates_names = {
             '/auth/password_change/': 'users/password_change_form.html',
             '/auth/password_change/done/': 'users/password_change_done.html',
         }
-        for url, template in templates_url_names.items():
+        for url, template in urls_templates_names.items():
             with self.subTest(url=url, template=template):
                 response = self.authorized_client.get(url)
                 self.assertTemplateUsed(response, template)

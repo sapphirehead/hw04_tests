@@ -1,16 +1,13 @@
-from django.contrib.auth import get_user_model
-from ..models import Post, Group
 from django.test import Client, TestCase
 from django.urls import reverse
-
-
-User = get_user_model()
+from ..models import Group, Post, User
 
 
 class PostFormTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+        cls.ADDED_USER = 1
         cls.author = User.objects.create_user(username='UserAndAuthor')
         cls.group = Group.objects.create(
             title='Test title',
@@ -27,11 +24,10 @@ class PostFormTests(TestCase):
         self.guest_client = Client()
         self.author_client = Client()
         self.author_client.force_login(PostFormTests.author)
+        self.posts_count = Post.objects.count()
 
     def test_create_form(self):
         """Валидная форма создает запись в Post."""
-        posts_count = Post.objects.count()
-
         form_data = {
             'text': 'Text text2',
             'author': self.author,
@@ -47,7 +43,9 @@ class PostFormTests(TestCase):
                 'posts:profile', kwargs={'username': self.author}
             )
         )
-        self.assertEqual(Post.objects.count(), posts_count + 1)
+        self.assertEqual(
+            Post.objects.count(), self.posts_count + PostFormTests.ADDED_USER
+        )
         self.assertTrue(
             Post.objects.filter(
                 text='Text text2',
@@ -58,7 +56,6 @@ class PostFormTests(TestCase):
 
     def test_edit_form(self):
         """Валидная форма редактирует запись в Post."""
-        posts_count = Post.objects.count()
         post = Post.objects.get(
             text='Test text1',
             author=self.author,
@@ -79,7 +76,7 @@ class PostFormTests(TestCase):
                 'posts:post_detail', kwargs={'post_id': post.id}
             )
         )
-        self.assertEqual(Post.objects.count(), posts_count)
+        self.assertEqual(Post.objects.count(), self.posts_count)
         self.assertTrue(
             Post.objects.filter(
                 text='Test text1 edited',
